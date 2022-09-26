@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/{any?}', function () {
     return view('guest.home');
-});
+})->where("any", ".*");
 
 Auth::routes(['register' => false]);
 
-Route::get('/admin', 'HomeController@index')->name('admin.home');
+Route::middleware('auth')->prefix('admin')->namespace('Admin')->name('admin.')->group(function () {
+    //Home
+    Route::get('/', 'HomeController@index')->name('home');
+    
+    //Resource POST
+    //Route::resource('posts', 'PostController');
+});
