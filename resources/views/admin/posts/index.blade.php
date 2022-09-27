@@ -30,6 +30,9 @@
                 <a class="btn btn-sm btn-light mr-2" href="{{ route('admin.posts.show', $post) }}">
                     <i class="fa-solid fa-eye mr-2"></i> Dettagli
                 </a>
+                <a class="btn btn-sm btn-warning mr-2" href="{{ route('admin.posts.edit', $post) }}">
+                    <i class="fa-solid fa-pencil mr-2"></i> Modifica
+                </a>
                 <form action="{{ route('admin.posts.destroy', $post->id) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
