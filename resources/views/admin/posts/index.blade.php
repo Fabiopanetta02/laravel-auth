@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<header>
+<header class="d-flex justify-content-between align-items-center mb-3">
     <h1>Lista Post</h1>
+    <a href="{{ route('admin.posts.create') }}" class="btn btn-success">
+        <i class="fa-solid fa-plus mr-2"></i> Nuovo Post
+    </a>
 </header>
 <table class="table table-striped table-dark">
     <thead>
