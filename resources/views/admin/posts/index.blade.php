@@ -12,10 +12,10 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Titolo</th>
-            <th scope="col">Slug</th>
+            <th scope="col">Categoria</th>
             <th scope="col">Creato</th>
             <th scope="col">Modificato</th>
-            <th scope="col">Azioni</th>
+            <th scope="col" class="text-center">Azioni</th>
         </tr>
     </thead>
     <tbody>
@@ -23,10 +23,18 @@
         <tr>
             <th scope="row">{{ $post->id }}</th>
             <td>{{ $post->title }}</td>
-            <td>{{ $post->slug }}</td>
+            <td>
+                @if ($post->category)
+                    <span class="badge badge-pill badge-{{ $post->category->color ?? 'light' }}">
+                        {{ $post->category->label }}
+                    </span>
+                @else
+                    Nessuna
+                @endif
+            </td>
             <td>{{ $post->created_at }}</td>
             <td>{{ $post->updated_at }}</td>
-            <td class="d-flex justify-content-start">
+            <td class="d-flex justify-content-center">
                 <a class="btn btn-sm btn-light mr-2" href="{{ route('admin.posts.show', $post) }}">
                     <i class="fa-solid fa-eye mr-2"></i> Dettagli
                 </a>

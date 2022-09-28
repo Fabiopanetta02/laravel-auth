@@ -10,6 +10,13 @@
             @if ($post->image)
                 <img class="float-left mr-2 img-fluid" src="{{ $post->image }}" alt="{{ $post->slug }}">  
             @endif
+            <p><strong>Categoria: </strong>
+                @if ($post->category)
+                    {{ $post->category->label }}
+                @else
+                    Nessuna Categoria
+                @endif
+            </p>
             <p>{{ $post->content }}</p>
             <div>
                 <strong>Creato il: </strong><time>{{ $post->created_at }}</time>
