@@ -13,8 +13,8 @@
             <th scope="col">#</th>
             <th scope="col">Titolo</th>
             <th scope="col">Slug</th>
-            <th scope="col">Creato il</th>
-            <th scope="col">Modificato il</th>
+            <th scope="col">Creato</th>
+            <th scope="col">Modificato</th>
             <th scope="col">Azioni</th>
         </tr>
     </thead>
