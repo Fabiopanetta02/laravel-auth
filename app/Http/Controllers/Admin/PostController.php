@@ -78,6 +78,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if($post->user_id !== Auth::id()) {
+            return redirect()->route('admin.posts.index')
+                    ->with('message', "Non sei autorizzato a modificare questo post creato da {$post->author->name}")
+                    ->with('type', 'warning');
+        }
+
         $categories = Category::select('id', 'label')->orderBy('id')->get();
         return view('admin.posts.edit', compact('post', 'categories'));
     }
@@ -110,6 +116,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->user_id !== Auth::id()) {
+            return redirect()->route('admin.posts.index')
+                    ->with('message', "Non sei autorizzato a cancellare questo post creato da {$post->author->name}")
+                    ->with('type', 'warning');
+        }
+
         $post->delete();
 
         return redirect()->route('admin.posts.index')
