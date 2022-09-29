@@ -24,6 +24,14 @@
             <div>
                 <strong>Modificato il: </strong><time>{{ $post->updated_at }}</time>
             </div>
+            <div>
+                <strong>Autore: </strong>
+                @if ($post->author)
+                    {{ $post->author->name }}
+                @else
+                    Anonimo
+                @endif
+            </div>
         </div>
     </main>
     <hr>

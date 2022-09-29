@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -48,6 +49,8 @@ class PostController extends Controller
         $data['slug'] = Str::slug($request->title, '-');
 
         $post->fill($data);
+
+        $post->user_id = Auth::id();
 
         $post->save();
 
