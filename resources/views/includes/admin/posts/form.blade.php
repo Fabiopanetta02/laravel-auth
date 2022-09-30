@@ -39,6 +39,17 @@
         <div class="col-1">
             <img src="{{ $post->image ?? "https://www.runningin.info/wp-content/uploads/2018/07/no-image.jpg" }}" alt="post image preview" id="preview" class="img-fluid">
         </div>
+        @if(count($tags))
+        <div class="col-12">
+            <h4>Tags</h4>
+            @foreach ($tags as $tag)
+                <div class="form-group form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="inlineCheckbox1">
+                    <label class="form-check-label" for="inlineCheckbox1">{{ $tag->label }}</label>
+                </div>   
+            @endforeach
+        </div>
+        @endif
     </div>
     <hr>
     <footer class="d-flex justify-content-between">

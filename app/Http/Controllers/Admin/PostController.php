@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,7 +32,8 @@ class PostController extends Controller
     {
         $post = new Post();
         $categories = Category::select('id', 'label')->orderBy('id')->get();
-        return view('admin.posts.create', compact('post', 'categories'));
+        $tags = Tag::select('id', 'label')->orderBy('id')->get();
+        return view('admin.posts.create', compact('post', 'categories', 'tags'));
     }
 
     /**
