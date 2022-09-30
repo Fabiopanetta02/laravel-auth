@@ -44,6 +44,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
+        // $required->validate([
+        //     'title' => 'required|string|min:5|max:50|unique:posts',
+        //     'content' => 'required|string',
+        //     'image' => 'nullable|url',
+        //     'category_id' => 'nullable|exists:categories,id',
+        //     'tags' => 'nullable|exists:tags,id',
+        // ], [
+        //     'title.required' => 'Il titolo è obbligatorio',
+        //     'content.required' => 'Il contenuto è obbligatorio',
+        //     'title.min' => 'Il titolo deve avere almeno :min caratteri',
+        //     'title.max' => 'Il titolo deve avere almeno :max caratteri',
+        //     'title.unique' => "Esiste già un post dal $request->title",
+        //     'image.url' => 'Url dell\'immagine non valido',
+        //     'category_id.exists' => 'Non esiste una categoria associabile',
+        //     'tags.exists' => 'Uno dei tag non è valido',
+        // ]);
+
         $data = $request->all();
 
         $post = new Post();
@@ -55,6 +73,8 @@ class PostController extends Controller
         $post->user_id = Auth::id();
 
         $post->save();
+
+        if(array_key_exists('tags', $data)) $post->tags()->attach($data['tags']);
 
         return redirect()->route('admin.posts.show', $post)
             ->with('message', "Post creato con successo")
@@ -80,14 +100,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        if($post->user_id !== Auth::id()) {
-            return redirect()->route('admin.posts.index')
-                    ->with('message', "Non sei autorizzato a modificare questo post creato da {$post->author->name}")
-                    ->with('type', 'warning');
-        }
+        // if($post->user_id !== Auth::id()) {
+        //     return redirect()->route('admin.posts.index')
+        //             ->with('message', "Non sei autorizzato a modificare questo post creato da {$post->author->name}")
+        //             ->with('type', 'warning');
+        // }
 
+        $tags = Tag::select('id', 'label')->orderBy('id')->get();
         $categories = Category::select('id', 'label')->orderBy('id')->get();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $prev_tags= $post->tags->pluck('id')->toArray();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags', 'prev_tags'));
     }
 
     /**
@@ -105,6 +127,9 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if(!array_key_exists('tags', $data)) $post->tags()->detach();
+        else $post->tags()->sync($data['tags']);
+
         return redirect()->route('admin.posts.show', $post)
             ->with('message', "Post modificato con successo")
             ->with('type', 'success');
@@ -118,12 +143,14 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if($post->user_id !== Auth::id()) {
-            return redirect()->route('admin.posts.index')
-                    ->with('message', "Non sei autorizzato a cancellare questo post creato da {$post->author->name}")
-                    ->with('type', 'warning');
-        }
+        // if($post->user_id !== Auth::id()) {
+        //     return redirect()->route('admin.posts.index')
+        //             ->with('message', "Non sei autorizzato a cancellare questo post creato da {$post->author->name}")
+        //             ->with('type', 'warning');
+        // }
 
+        if(count($post->tags)) $post->tags->detach();
+        
         $post->delete();
 
         return redirect()->route('admin.posts.index')

@@ -14,6 +14,7 @@
             <th scope="col">Titolo</th>
             <th scope="col">Autore</th>
             <th scope="col">Categoria</th>
+            <th scope="col">Tags</th>
             <th scope="col">Creato</th>
             <th scope="col">Modificato</th>
             <th scope="col" class="text-center">Azioni</th>
@@ -39,6 +40,13 @@
                 @else
                     Nessuna
                 @endif
+            </td>
+            <td>
+                @forelse ($post->tags as $tag)
+                    <span class="badge mx-1" style="background-color: {{ $tag->color }}">{{ $tag->label }}</span>
+                @empty
+                    Nessun Tag
+                @endforelse
             </td>
             <td>{{ $post->created_at }}</td>
             <td>{{ $post->updated_at }}</td>

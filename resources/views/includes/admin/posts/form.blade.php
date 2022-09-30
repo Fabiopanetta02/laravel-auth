@@ -9,7 +9,7 @@
         <div class="col-8">
             <div class="form-group">
                 <label for="title">Titolo</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $post->title) }}" required minlength="5" maxlength="50">
+                <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $post->title) }}">
             </div>
         </div>
         <div class="col-4">
@@ -27,7 +27,7 @@
         <div class="col-12">
             <div class="form-group">
                 <label for="content">Contenuto</label>
-                <textarea class="form-control" id="content" name="content" rows="8" required minlength="5" maxlength="50">{{ old('content', $post->content) }}</textarea>
+                <textarea class="form-control" id="content" name="content" rows="8">{{ old('content', $post->content) }}</textarea>
             </div>
         </div>
         <div class="col-11">
@@ -40,15 +40,22 @@
             <img src="{{ $post->image ?? "https://www.runningin.info/wp-content/uploads/2018/07/no-image.jpg" }}" alt="post image preview" id="preview" class="img-fluid">
         </div>
         @if(count($tags))
-        <div class="col-12">
-            <h4>Tags</h4>
-            @foreach ($tags as $tag)
-                <div class="form-group form-check-inline">
-                    <input type="checkbox" class="form-check-input" id="inlineCheckbox1">
-                    <label class="form-check-label" for="inlineCheckbox1">{{ $tag->label }}</label>
-                </div>   
-            @endforeach
-        </div>
+            <div class="col-12">
+                <h4>Tags</h4>
+                @foreach ($tags as $tag)
+                    <div class="form-group form-check-inline">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="tag-{{ $tag->label }}" 
+                            name="tags[]" 
+                            value="{{ $tag->id }}"
+                            @if(in_array($tag->id, old('tags', $prev_tags ?? []))) checked @endif 
+                        >
+                        <label class="form-check-label" for="tag-{{ $tag->label }}">{{ $tag->label }}</label>
+                    </div>   
+                @endforeach
+            </div>
         @endif
     </div>
     <hr>
